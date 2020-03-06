@@ -1,0 +1,125 @@
+@font-face {
+    font-family: "MaterialIcons";
+    src: url("../assets/MaterialIcons-Regular.eot");
+    src: url("../assets/MaterialIcons-Regular.woff") format("woff");
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.material-icon {
+    font-family: "MaterialIcons";
+}
+
+.small {
+    font-size: 24px;
+}
+
+.large {
+    font-size: 36px;
+}
+
+.content {
+    display: grid;
+    grid-template-rows: 50px auto;
+    height: 100vh;
+}
+
+.top-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 50px;
+    box-shadow: 1px 1px rgba(192, 192, 192, 0.8);
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 200px auto;
+    width: 100vw;
+}
+
+.top-nav li {
+    float: right;
+}
+
+.top-nav li a {
+    display: block;
+    padding: 0 10px 0 10px;
+    line-height: 50px;
+}
+
+.brand-name {
+    float: left;
+    display: block;
+    padding: 0 10px 0 25px;
+    line-height: 50px;
+}
+
+.sidebar {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 200px;
+    position: fixed;
+    overflow: auto;
+    box-shadow: 1px 1px rgba(192, 192, 192, 0.8);
+}
+
+.sidebar .submenu {
+    padding: 10px 0 10px 25px;
+    width: inherit;
+    display: block;
+    box-shadow: 1px 1px rgba(192, 192, 192, 0.8);
+}
+
+.sidebar li .menu-items {
+    padding-left: 15px;
+    list-style-type: none;
+}
+
+.sidebar li .menu-items li {
+    line-height: 25px;
+    height: 25px;
+}
+
+.container {
+    padding: 25px 0 0 25px;
+}
+
+/* Colors */
+.white-text {
+    color: white;
+}
+
+.red {
+    background-color: #f4443e;
+}
+
+.blue {
+    background-color: #2196f3;
+}
+
+.btn {
+    border-radius: 5px;
+    height: 35px;
+    width: 90px;
+    border: 0px;
+    text-transform: uppercase;
+    color: white;
+}
+
+.btn-round {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    border: 0px;
+    color: white;
+}
+
+/* .input-group {
+    
+} */
