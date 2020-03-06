@@ -1,16 +1,22 @@
 <html>
     <head>
-        <title>Login</title>
+        <title>Lana | Login</title>
+        <script defer src="/__/firebase/7.6.1/firebase-app.js"></script>
+        <script defer src="/__/firebase/7.6.1/firebase-auth.js"></script>
+        <script defer src="/__/firebase/7.6.1/firebase-firestore.js"></script>
+        <script defer src="/__/firebase/init.js"></script>
+        <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <form>
+        <form onclick="return submitLoginForm()">
             <p>
                 Email <input type="email" id="email" required>
             </p>
             <p>
                 Password <input type="password" id="password" required>
             </p>
-            <input type="submit">
+            <button type="btn blue">Login</button>
         </form>
+        <script defer src="js/app.js"></script>
     </body>
 </html>

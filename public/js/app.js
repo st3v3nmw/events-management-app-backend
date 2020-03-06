@@ -290,5 +290,53 @@ function submitProfileUpdateForm() {
     const cPassword = document.getElementById("up_cPassword").value;
     const fName = document.getElementById("up_fName").value;
     const lName = document.getElementById("up_lName").value;
+
+    let user = firebase.auth().currentUser;
+    const credential = firebase.auth.EmailAuthProvider.credential(
+        user.email, 
+        old_password
+    );
+
+    user.reauthenticateWithCredential(credential)
+        .then(function() {
+            user.updateEmail(email).then(function() {
+                user.updatePassword(password)
+                    .then(function() {
+                        console.log("password updated");
+                        db.collection("users").doc(user.uid)
+                            .update({
+                                email, fName, lName
+                            })
+                            .then(() => {
+                                console.log("done!!!");
+                            })
+                            .catch(error => {
+                                console.log(error);
+                            });
+                    }).catch(function(error) {
+                        console.log("password update failed");
+                    });
+              }).catch(function(error) {
+                    console.log("email update failed");
+              });
+        }).catch(function(error) {
+            console.log("authentication failed!");
+        });
     return false;
+}
+
+function submitLoginForm() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    firebase.auth()
+        .signInWithEmailAndPassword(email, password)
+        .catch(error => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+        });
+
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) window.location.href = "index.html";
+        });
 }
