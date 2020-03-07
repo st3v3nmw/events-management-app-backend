@@ -22,6 +22,9 @@ for (let link of tabs) {
                         case "manage_employees":
                             listEmployees();
                             break;
+                        case "create":
+                            document.getElementById("banner-image").addEventListener("change", readFile);
+                            break;
                     }
                 });
         });

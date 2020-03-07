@@ -103,6 +103,10 @@ body {
     background-color: #2196f3;
 }
 
+.green {
+    background-color: #00FF00; /* fix me */
+}
+
 .btn {
     border-radius: 5px;
     height: 35px;
@@ -123,3 +127,7 @@ body {
 /* .input-group {
     
 } */
+
+#base64Image {
+    display: none;
+}

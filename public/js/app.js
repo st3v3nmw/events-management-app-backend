@@ -33,6 +33,8 @@ class Event {
         this.checkInCount = doc['checkInCount'];
         this.end = doc['end'];
         this.eventId = eventId;
+        this.hearts = doc['hearts'];
+        this.image = doc['image'];
         this.location = doc['location'];
         this.name = doc['name'];
         this.orgId = doc['orgId'];
@@ -60,6 +62,16 @@ function getTodayDate() {
     date.setSeconds(0);
     date.setMilliseconds(0);
     return date;
+}
+
+function readFile() {
+    if (this.files && this.files[0]) {
+        let reader = new FileReader();
+        reader.addEventListener("load", e => {
+        document.getElementById("base64Image").innerText = e.target.result;
+        });
+        reader.readAsDataURL(this.files[0]);
+    }
 }
 
 function submitSignUp() {
@@ -143,15 +155,17 @@ function submitCreateEventForm() {
     const end = document.getElementById("event_end_date").value;
     const location = document.getElementById("event_location").value;
     const type = document.getElementById("event_type").value;
+    const image = document.getElementById("base64Image").innerText;
 
     db.collection("events")
             .add({
-                location, name,
+                image, location, name,
                 addedBy: admin.userId,
                 attendeeCount: 0,
                 checkInCount: 0,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 end: firebase.firestore.Timestamp.fromDate(new Date(end)),
+                hearts: 0,
                 orgId: organization.orgId,
                 posted: false,
                 start: firebase.firestore.Timestamp.fromDate(new Date(start)),
@@ -190,7 +204,7 @@ function loadOnGoingEvents() {
             container.innerHTML = s;
         })
         .catch(error => {
-            console.log(error)
+            console.log(error);
         });
 }
 
@@ -339,4 +353,5 @@ function submitLoginForm() {
     firebase.auth().onAuthStateChanged(user => {
         if (user) window.location.href = "index.html";
         });
+    return false;
 }
