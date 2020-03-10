@@ -33,7 +33,6 @@ class Event {
         this.checkInCount = doc['checkInCount'];
         this.end = doc['end'];
         this.eventId = eventId;
-        this.hearts = doc['hearts'];
         this.image = doc['image'];
         this.location = doc['location'];
         this.name = doc['name'];
@@ -93,7 +92,8 @@ function submitSignUp() {
                     email: document.getElementById('orgEmail').value,
                     location: document.getElementById('location').value,
                     address: document.getElementById('address').value,
-                    added: firebase.firestore.FieldValue.serverTimestamp()
+                    added: firebase.firestore.FieldValue.serverTimestamp(),
+                    phoneNumber: document.getElementById('orgPhoneNumber').value
                 })
                 .then(docRef => {
                     db.collection("users").doc(user.uid)
@@ -103,6 +103,7 @@ function submitSignUp() {
                             email: user.email,
                             fName: document.getElementById('fName').value,
                             lName: document.getElementById("lName").value,
+                            phoneNumber: document.getElementById("phoneNumber").value,
                             organization: docRef.id
                         })
                         .then(() => {
@@ -165,7 +166,6 @@ function submitCreateEventForm() {
                 checkInCount: 0,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 end: firebase.firestore.Timestamp.fromDate(new Date(end)),
-                hearts: 0,
                 orgId: organization.orgId,
                 posted: false,
                 start: firebase.firestore.Timestamp.fromDate(new Date(start)),
@@ -284,9 +284,10 @@ function submitOrgUpdateForm() {
     const email = document.getElementById("orgEmail").value;
     const location = document.getElementById("orgLocation").value;
     const address = document.getElementById("orgAddress").value;
+    const orgPhoneNumber = document.getElementById("orgPhoneNumber").value;
     db.collection("organizations").doc(organization.orgId)
         .update({
-            name, email, location, address
+            name, email, location, address, orgPhoneNumber
         })
         .then(() => {
             console.log("update successful");
