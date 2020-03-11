@@ -24,6 +24,15 @@ for (let link of tabs) {
                             break;
                         case "create":
                             document.getElementById("banner-image").addEventListener("change", readFile);
+                            mapboxgl.accessToken = 'pk.eyJ1Ijoic3QzdjNubXciLCJhIjoiY2s3bHh5OG42MGM1aDNrcDZyNXlkZXB2NCJ9.QjrMAZJvETZJAQHC8-0tsw';
+
+                            if (navigator.geolocation) {
+                                navigator.geolocation.getCurrentPosition(position => {
+                                    loadMap(position.coords.longitude, position.coords.latitude);
+                                });
+                            } else {
+                                loadMap(0, 0);
+                            }
                             break;
                     }
                 });

@@ -49,6 +49,7 @@ let admin = null;
 let organization = null;
 let events = [];
 let employees = [];
+let latitude = 0, longitude = 0;
 
 async function fetchHTML(url) {
     return await (await fetch(url)).text();
@@ -129,6 +130,7 @@ function checkLoggedIn() {
                 .then(doc => {
                     if (doc.exists) {
                         admin = new Admin(doc.data(), user.uid);
+                        document.getElementById("display_name").innerText = `${admin.fName} ${admin.lName}`;
                         db.collection("organizations").doc(admin.orgId).get()
                             .then(doc => {
                                 if (doc.exists) {
@@ -157,6 +159,12 @@ function submitCreateEventForm() {
     const location = document.getElementById("event_location").value;
     const type = document.getElementById("event_type").value;
     const image = document.getElementById("base64Image").innerText;
+    let end_date = new Date(end);
+    end_date.setMinutes(1);
+    end_date.setHours(0);
+    let start_date = new Date(start);
+    start_date.setMinutes(1);
+    start_date.setHours(0);
 
     db.collection("events")
             .add({
@@ -165,10 +173,11 @@ function submitCreateEventForm() {
                 attendeeCount: 0,
                 checkInCount: 0,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                end: firebase.firestore.Timestamp.fromDate(new Date(end)),
+                end: firebase.firestore.Timestamp.fromDate(end_date),
+                coordinates: {longitude, latitude},
                 orgId: organization.orgId,
                 posted: false,
-                start: firebase.firestore.Timestamp.fromDate(new Date(start)),
+                start: firebase.firestore.Timestamp.fromDate(start_date),
                 type: Number.parseInt(type)
             })
             .then(docRef => {
@@ -355,4 +364,90 @@ function submitLoginForm() {
         if (user) window.location.href = "index.html";
         });
     return false;
+}
+
+function loadMap(x, y) {
+    console.log(x, y);
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [x, y],
+        zoom: 16
+    });
+
+    var geojson = {
+        'type': 'FeatureCollection',
+        'features': [
+            {
+                'type': 'Feature',
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [x, y]
+                }
+            }
+        ]
+    };
+
+    var canvas = map.getCanvasContainer();
+
+    function onMove(e) {
+        var coords = e.lngLat;
+        canvas.style.cursor = 'grabbing';
+        geojson.features[0].geometry.coordinates = [coords.lng, coords.lat];
+        map.getSource('point').setData(geojson);
+    }
+
+    function onUp(e) {
+        var coords = e.lngLat;
+        longitude = coords.lng;
+        latitude = coords.lat;
+        map.off('mousemove', onMove);
+        map.off('touchmove', onMove);
+    }
+
+    map.on('load', function() {
+        map.addSource('point', {
+            'type': 'geojson',
+            'data': geojson
+        });
+
+        map.addLayer({
+            'id': 'point',
+            'type': 'circle',
+            'source': 'point',
+            'paint': {
+                'circle-radius': 10,
+                'circle-color': '#3887be'
+            }
+        });
+
+        map.on('mouseenter', 'point', function() {
+            map.setPaintProperty('point', 'circle-color', '#3bb2d0');
+            canvas.style.cursor = 'move';
+        });
+
+        map.on('mouseleave', 'point', function() {
+            map.setPaintProperty('point', 'circle-color', '#3887be');
+            canvas.style.cursor = '';
+        });
+
+        map.on('mousedown', 'point', function(e) {
+            e.preventDefault();
+
+            canvas.style.cursor = 'grab';
+
+            map.on('mousemove', onMove);
+            map.once('mouseup', onUp);
+        });
+
+        map.on('touchstart', 'point', function(e) {
+            if (e.points.length !== 1) return;
+
+            e.preventDefault();
+            map.on('touchmove', onMove);
+            map.once('touchend', onUp);
+        });
+
+        map.addControl(new mapboxgl.NavigationControl());
+    });
 }

@@ -1,5 +1,5 @@
 <h1>Create Event</h1>
-<form onsubmit="return submitCreateEventForm()">
+<form onsubmit="return submitCreateEventForm()" id="createEventForm">
     <p>Event Name: <input type="text" id="event_name" required></p>
     <p>Start Date: <input type="date" id="event_start_date" required></p>
     <p>End Date: <input type="date" id="event_end_date" required></p>
@@ -10,6 +10,14 @@
         <option value="2">Concert</option>
     </select></p>
     <p>Image <input type="file" id="banner-image" accept="image/x-png,image/jpeg" required></p>
+    <p>Drag the blue dot to select the event location: </p>
+    <div id="map"></div>
     <p id="base64Image"></p>
+    <p id="latitude"></p>
+    <p id="longitude"></p>
     <button class="btn blue">Submit</button>
 </form>
+
+</body>
+</html>
+</script>

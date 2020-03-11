@@ -9,6 +9,10 @@ body {
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
 .material-icon {
     font-family: "MaterialIcons";
 }
@@ -30,8 +34,8 @@ body {
 .top-nav {
     list-style-type: none;
     margin: 0;
-    padding: 0;
-    width: 100vw;
+    padding: 0 20px 0 0;
+    width: auto;
     height: 50px;
     box-shadow: 1px 1px rgba(192, 192, 192, 0.8);
 }
@@ -128,6 +132,16 @@ body {
     
 } */
 
-#base64Image {
+#base64Image, #longitude, #latitude {
     display: none;
+}
+
+#map {
+    width: 500px;
+    height: 500px;
+    margin-bottom: 25px;
+}
+
+#createEventForm {
+    margin-bottom: 25px;
 }
