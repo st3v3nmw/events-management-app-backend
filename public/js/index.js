@@ -5,7 +5,7 @@ fetchHTML("home.html")
         content.innerHTML = value;
     });
 
-const tabs = ["create", "ongoing", "past", "add_employee", "manage_employees", "update_org", "update_profile"];
+const tabs = ["create", "ongoing", "past", "add_employee", "manage_employees", "update_org", "update_profile", "home"];
 for (let link of tabs) {
     document.getElementById(link)
         .addEventListener('click', () => {
