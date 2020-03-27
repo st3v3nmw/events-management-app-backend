@@ -1,23 +1,61 @@
 <h1>Create Event</h1>
-<form onsubmit="return submitCreateEventForm()" id="createEventForm">
-    <p>Event Name: <input type="text" id="event_name" required></p>
-    <p>Start Date: <input type="date" id="event_start_date" required></p>
-    <p>End Date: <input type="date" id="event_end_date" required></p>
-    <p>Location: <input type="text" id="event_location" required></p>
-    <p>Type: <select id="event_type">
-        <option value="0">Conference</option>
-        <option value="1">Workshop</option>
-        <option value="2">Concert</option>
-    </select></p>
-    <p>Image <input type="file" id="banner-image" accept="image/x-png,image/jpeg" required></p>
-    <p>Drag the blue dot to select the event location: </p>
-    <div id="map"></div>
-    <p id="base64Image"></p>
-    <p id="latitude"></p>
-    <p id="longitude"></p>
-    <button class="btn blue">Submit</button>
+<form onsubmit="return submitCreateEventForm()" class="splitForm">
+    <div id="createEventForm1">
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="event_name" type="text" class="form-field__input" placeholder=" " required>
+                <label for="event_name" class="form-field__label">Event Name</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div> 
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="event_start_date" type="date" class="form-field__input" required>
+                <label for="event_start_date" class="form-field__label">Start Date</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div> 
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="event_end_date" type="date" class="form-field__input" required>
+                <label for="event_end_date" class="form-field__label">End Date</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="location" type="text" class="form-field__input" placeholder=" " required>
+                <label for="location" class="form-field__label">Location</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <select id="event_type" class="form-field__input" required>
+                    <option value="0">Conference</option>
+                    <option value="1">Workshop</option>
+                    <option value="2">Concert</option>
+                </select>
+                <label for="event_type" class="form-field__label">Event Type</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="banner-image" type="file" class="form-field__input" accept="image/x-png,image/jpeg" required>
+                <label for="banner-image" class="form-field__label">Banner Image</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <button class="btn blue">Submit</button>
+    </div>
+    <div id="createEventForm2">
+        <p>Drag the blue dot to select the event location: </p>
+        <div id="map">
+            <p>Loading Map...</p>
+        </div>
+        <p id="base64Image"></p>
+        <p id="latitude"></p>
+        <p id="longitude"></p>
+    </div>
 </form>
-
-</body>
-</html>
-</script>

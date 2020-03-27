@@ -44,7 +44,7 @@ class Event {
 }
 
 
-const db = firebase.firestore();
+// const db = firebase.firestore();
 let admin = null;
 let organization = null;
 let events = [];
@@ -124,32 +124,32 @@ function submitSignUp() {
 }
 
 function checkLoggedIn() {
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            db.collection("users").doc(user.uid).get()
-                .then(doc => {
-                    if (doc.exists) {
-                        admin = new Admin(doc.data(), user.uid);
-                        document.getElementById("display_name").innerText = `${admin.fName} ${admin.lName}`;
-                        db.collection("organizations").doc(admin.orgId).get()
-                            .then(doc => {
-                                if (doc.exists) {
-                                    organization = new Organization(doc.data(), admin.orgId);
-                                } else {
-                                    window.location.href = "login.html";
-                                }
-                            })
-                    } else {
-                        window.location.href = "login.html";
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        } else {
-          window.location.href = "login.html";
-        }
-      });
+    // firebase.auth().onAuthStateChanged(function(user) {
+    //     if (user) {
+    //         db.collection("users").doc(user.uid).get()
+    //             .then(doc => {
+    //                 if (doc.exists) {
+    //                     admin = new Admin(doc.data(), user.uid);
+    //                     document.getElementById("display_name").innerText = `${admin.fName} ${admin.lName}`;
+    //                     db.collection("organizations").doc(admin.orgId).get()
+    //                         .then(doc => {
+    //                             if (doc.exists) {
+    //                                 organization = new Organization(doc.data(), admin.orgId);
+    //                             } else {
+    //                                 window.location.href = "login.html";
+    //                             }
+    //                         })
+    //                 } else {
+    //                     window.location.href = "login.html";
+    //                 }
+    //             })
+    //             .catch(error => {
+    //                 console.log(error);
+    //             })
+    //     } else {
+    //       window.location.href = "login.html";
+    //     }
+    //   });
 }
 
 function submitCreateEventForm() {
@@ -450,4 +450,11 @@ function loadMap(x, y) {
 
         map.addControl(new mapboxgl.NavigationControl());
     });
+}
+
+function adjustColor(former, next) {
+    document.getElementById(former).style.color = "black";
+    document.getElementById(former).style.backgroundColor = "white";
+    document.getElementById(next).style.color = "white";
+    document.getElementById(next).style.backgroundColor = "#2196f3";
 }

@@ -1,9 +1,41 @@
-<h1>Update Organization Details</h1>
-<form onsubmit="return submitOrgUpdateForm()">
-    <p>Name <input type="text" id="orgName" required></p>
-    <p>Email <input type="text" id="orgEmail" required></p>
-    <p>Location <input type="text" id="orgLocation" required></p>
-    <p>Address <input type="text" id="orgAddress" required></p>
-    <p>Org Phone Number <input type="text" id="orgPhoneNumber" required></p>
-    <button class="btn blue">Update</button>
-</form>
+<div class="form">
+    <h1>Update Details</h1>
+    <form onsubmit="return submitOrgUpdateForm()">
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="orgName" type="text" class="form-field__input" placeholder=" " required>
+                <label for="orgName" class="form-field__label">Name</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div> 
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="orgEmail" type="email" class="form-field__input" placeholder=" " required>
+                <label for="orgEmail" class="form-field__label">Email</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div> 
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="orgLocation" type="text" class="form-field__input" placeholder=" " required>
+                <label for="orgLocation" class="form-field__label">Location</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="orgAddress" type="text" class="form-field__input" placeholder=" " required>
+                <label for="orgAddress" class="form-field__label">Address</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div> 
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="orgPhoneNumber" type="text" class="form-field__input" placeholder=" " required>
+                <label for="orgPhoneNumber" class="form-field__label">Phone Number</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div> 
+        <button class="btn blue">Update</button>
+    </form>
+</div>

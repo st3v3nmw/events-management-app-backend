@@ -1,5 +1,13 @@
-<h1>Add Employee</h1>
-<form onsubmit="return submitAddEmployeeForm()">
-    <p>Enter employee's email address: <input type="email" id="emp_email" required></p>
-    <button class="btn blue">Add</button>
-</form>
+<div class="form">
+    <h1>Add Employee</h1>
+    <form onsubmit="return submitAddEmployeeForm()">
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="emp_email" type="email" class="form-field__input" placeholder=" " required>
+                <label for="emp_email" class="form-field__label">Email Address</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>    
+        <button class="btn blue">Add</button>
+    </form>
+</div>

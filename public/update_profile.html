@@ -1,10 +1,48 @@
-<h1>Update Profile</h1>
-<form onsubmit="return submitProfileUpdateForm()">
-    <p>Email <input type="email" id="up_email" required></p>
-    <p>Old Password <input type="password" id="old_password" required></p>
-    <p>Password <input type="password" id="up_password" required></p>
-    <p>Retype Password <input type="password" id="up_cPassword" required></p>
-    <p>First Name <input type="text" id="up_fName" required></p>
-    <p>Last Name <input type="text" id="up_lName" required></p>
-    <button class="btn blue">Update</button>
-</form>
+<div class="form">
+    <h1>Update Profile</h1>
+    <form onsubmit="return submitProfileUpdateForm()">
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="up_fName" type="text" class="form-field__input" placeholder=" " required>
+                <label for="up_fName" class="form-field__label">First Name</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="up_lName" type="text" class="form-field__input" placeholder=" " required>
+                <label for="up_lName" class="form-field__label">Last Name</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="up_email" type="email" class="form-field__input" placeholder=" " required>
+                <label for="up_email" class="form-field__label">Email Address</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="old_password" type="text" class="form-field__input" placeholder=" " required>
+                <label for="old_password" class="form-field__label">Old Password</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="up_password" type="password" class="form-field__input" placeholder=" " required>
+                <label for="up_password" class="form-field__label">New Password</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="up_cPassword" type="password" class="form-field__input" placeholder=" " required>
+                <label for="up_cPassword" class="form-field__label">Confirm Password</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <button class="btn blue">Update</button>
+    </form>
+</div>

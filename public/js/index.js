@@ -5,10 +5,16 @@ fetchHTML("home.html")
         content.innerHTML = value;
     });
 
-const tabs = ["create", "ongoing", "past", "add_employee", "manage_employees", "update_org", "update_profile", "home"];
+active = "home";
+document.getElementById(active).style.color = "white";
+document.getElementById(active).style.backgroundColor = "#2196f3";
+
+const tabs = ["create", "ongoing", "past", "add_employee", "manage_employees", "update_org", "update_profile", "home", "stats"];
 for (let link of tabs) {
     document.getElementById(link)
         .addEventListener('click', () => {
+            adjustColor(active, link);
+            active = link;
             fetchHTML(link+".html")
                 .then(value => {
                     content.innerHTML = value;
