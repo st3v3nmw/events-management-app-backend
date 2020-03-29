@@ -1,10 +1,12 @@
 class Employee {
     constructor(doc, userId) {
         this.access = doc['access'];
+        this.createdAt = dateString(doc['created'].toDate());
         this.email = doc['email'];
         this.fName = doc['fName'];
         this.lName = doc['lName'];
         this.orgId = doc['organization'];
+        this.phoneNumber = doc['phoneNumber'];
         this.userId = userId;
     }
 }
@@ -22,6 +24,7 @@ class Organization {
         this.location = doc['location'];
         this.name = doc['name'];
         this.orgId = orgId;
+        this.phoneNumber = doc['phoneNumber'];
     }
 }
 
@@ -31,25 +34,27 @@ class Event {
         this.addedBy = doc['addedBy'];
         this.attendeeCount = doc['attendeeCount'];
         this.checkInCount = doc['checkInCount'];
-        this.end = doc['end'];
+        this.coordinates = doc['coordinates'];
+        this.createdAt = dateString(doc['createdAt'].toDate());
+        this.end = dateString(doc['end'].toDate());
         this.eventId = eventId;
         this.image = doc['image'];
         this.location = doc['location'];
         this.name = doc['name'];
         this.orgId = doc['orgId'];
-        this.posted = doc['posted'];
-        this.start = doc['start'];
-        this.type = doc['type'];
+        this.start = dateString(doc['start'].toDate());
+        this.type = eventTypes[doc['type']];
     }
 }
 
 
-// const db = firebase.firestore();
+const db = firebase.firestore();
 let admin = null;
 let organization = null;
 let events = [];
 let employees = [];
 let latitude = 0, longitude = 0;
+let eventTypes = ["Conference", "Workshop", "Concert"];
 
 async function fetchHTML(url) {
     return await (await fetch(url)).text();
@@ -62,6 +67,10 @@ function getTodayDate() {
     date.setSeconds(0);
     date.setMilliseconds(0);
     return date;
+}
+
+function dateString(date) {
+    return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
 }
 
 function readFile() {
@@ -122,32 +131,32 @@ function submitSignUp() {
 }
 
 function checkLoggedIn() {
-    // firebase.auth().onAuthStateChanged(function(user) {
-    //     if (user) {
-    //         db.collection("users").doc(user.uid).get()
-    //             .then(doc => {
-    //                 if (doc.exists) {
-    //                     admin = new Admin(doc.data(), user.uid);
-    //                     document.getElementById("display_name").innerText = `${admin.fName} ${admin.lName}`;
-    //                     db.collection("organizations").doc(admin.orgId).get()
-    //                         .then(doc => {
-    //                             if (doc.exists) {
-    //                                 organization = new Organization(doc.data(), admin.orgId);
-    //                             } else {
-    //                                 window.location.href = "login.html";
-    //                             }
-    //                         })
-    //                 } else {
-    //                     window.location.href = "login.html";
-    //                 }
-    //             })
-    //             .catch(error => {
-    //                 console.log(error);
-    //             })
-    //     } else {
-    //       window.location.href = "login.html";
-    //     }
-    //   });
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            db.collection("users").doc(user.uid).get()
+                .then(doc => {
+                    if (doc.exists) {
+                        admin = new Admin(doc.data(), user.uid);
+                        document.getElementById("display_name").innerText = `${admin.fName} ${admin.lName}`;
+                        db.collection("organizations").doc(admin.orgId).get()
+                            .then(doc => {
+                                if (doc.exists) {
+                                    organization = new Organization(doc.data(), admin.orgId);
+                                } else {
+                                    window.location.href = "login.html";
+                                }
+                            })
+                    } else {
+                        window.location.href = "login.html";
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        } else {
+          window.location.href = "login.html";
+        }
+      });
 }
 
 function submitCreateEventForm() {
@@ -174,7 +183,6 @@ function submitCreateEventForm() {
                 end: firebase.firestore.Timestamp.fromDate(end_date),
                 coordinates: {longitude, latitude},
                 orgId: organization.orgId,
-                posted: false,
                 start: firebase.firestore.Timestamp.fromDate(start_date),
                 type: Number.parseInt(type)
             })
@@ -191,20 +199,38 @@ function submitCreateEventForm() {
 
 function loadOnGoingEvents() {
     const container = document.getElementById("ongoing_container");
-    events = [];
     db.collection("events")
         .where("orgId", "==", organization.orgId)
         .where("end", ">=", firebase.firestore.Timestamp.fromDate(getTodayDate()))
         .get()
         .then(querySnapshot => {
+            let columnDefs = [
+                {headerName: "", field: "expand", width: 75, cellRenderer: params => {
+                    let link = document.createElement('span');
+                    link.innerText = "Expand";
+                    link.style.textDecoration = "underline";
+                    link.style.cursor = "pointer";
+                    link.addEventListener('click', () => {
+                        console.log(params);
+                        // TODO: Expand Event View
+                    });
+                    return link;
+                }},
+                {headerName: "Name", field: "name", sortable: true, filter: true},
+                {headerName: "Location", field: "location", sortable: true, filter: true},
+                {headerName: "Start", field: "start", width: 100, sortable: true, filter: true},
+                {headerName: "End", field: "end", width: 100, sortable: true, filter: true},
+                {headerName: "Type", field: "type", width: 120, sortable: true, filter: true},
+                {headerName: "Attendees", field: "attendeeCount", width: 105, sortable: true, filter: true},
+                {headerName: "Check-ins", field: "checkInCount", width: 100, sortable: true, filter: true}
+            ];
+            let rowData = [];
             querySnapshot.forEach(doc => {
-                events.push(new Event(doc.data(), doc.id));
+                event = new Event(doc.data(), doc.id);
+                employee = doc.data();
+                rowData.push({name: event.name, location: event.location, start: event.start, end: event.end, type: event.type, attendeeCount: event.attendeeCount, checkInCount: event.checkInCount});
             });
-            let s = "";
-            for (event of events) {
-                s += "<p>" + event.eventId + " " + event.name + " " + event.orgId + "</p>";
-            }
-            container.innerHTML = s;
+            showGrid(columnDefs, rowData, container, "Ongoing Events");
         })
         .catch(error => {
             displayErrorModal(error);
@@ -218,12 +244,33 @@ function loadPastEvents() {
         .where("end", "<", firebase.firestore.Timestamp.fromDate(getTodayDate()))
         .get()
         .then(querySnapshot => {
-            let s = "";
+            let columnDefs = [
+                {headerName: "", field: "expand", width: 75, cellRenderer: params => {
+                    let link = document.createElement('span');
+                    link.innerText = "Expand";
+                    link.style.textDecoration = "underline";
+                    link.style.cursor = "pointer";
+                    link.addEventListener('click', () => {
+                        console.log(params);
+                        // TODO: Expand Event View
+                    });
+                    return link;
+                }},
+                {headerName: "Name", field: "name", sortable: true, filter: true},
+                {headerName: "Location", field: "location", sortable: true, filter: true},
+                {headerName: "Start", field: "start", width: 100, sortable: true, filter: true},
+                {headerName: "End", field: "end", width: 100, sortable: true, filter: true},
+                {headerName: "Type", field: "type", width: 120, sortable: true, filter: true},
+                {headerName: "Attendees", field: "attendeeCount", width: 105, sortable: true, filter: true},
+                {headerName: "Check-ins", field: "checkInCount", width: 100, sortable: true, filter: true}
+            ];
+            let rowData = [];
             querySnapshot.forEach(doc => {
-                event = doc.data();
-                s += "<p>" + doc.id+ " " + event["name"] + " " + event["orgId"] + "</p>";
+                event = new Event(doc.data(), doc.id);
+                employee = doc.data();
+                rowData.push({name: event.name, location: event.location, start: event.start, end: event.end, type: event.type, attendeeCount: event.attendeeCount, checkInCount: event.checkInCount});
             });
-            container.innerHTML = s;
+            showGrid(columnDefs, rowData, container, "Past Events");
         })
         .catch(error => {
             displayErrorModal(error);
@@ -239,7 +286,6 @@ function submitAddEmployeeForm() {
             if (querySnapshot['empty']) {
                 displayErrorModal("Provided email does not exist in our records.");
             }
-
             employee = querySnapshot['docs'][0].data();
             employee_id = querySnapshot['docs'][0].id;
             if (employee["orgId"] == undefined) {
@@ -270,12 +316,18 @@ function listEmployees() {
         .where("organization", "==", organization.orgId)
         .get()
         .then(querySnapshot => {
-            let s = "";
+            let columnDefs = [
+                {headerName: "First Name", field: "fName", sortable: true, filter: true},
+                {headerName: "Last Name", field: "lName", sortable: true, filter: true},
+                {headerName: "Email Address", field: "email", sortable: true, filter: true},
+                {headerName: "Phone Number", field: "phoneNumber", sortable: true, filter: true}
+            ];
+            let rowData = [];
             querySnapshot.forEach(doc => {
                 employee = doc.data();
-                s += "<p>" + doc.id+ " " + employee["fName"] + " " + employee["lName"] + " " + employee["access"] + "</p>";
+                rowData.push({fName: employee["fName"], lName: employee["lName"], email: employee["email"], phoneNumber: employee["phoneNumber"]});
             });
-            container.innerHTML = s;
+            showGrid(columnDefs, rowData, container, "Employees");
         })
         .catch(error => {
             displayErrorModal(error);
@@ -294,6 +346,11 @@ function submitOrgUpdateForm() {
         })
         .then(() => {
             displaySuccessModal();
+            organization.name = name;
+            organization.email = email;
+            organization.location = location;
+            organization.address = address;
+            organization.phoneNumber = orgPhoneNumber;  
         })
         .catch(error => {
             displayErrorModal(error);
@@ -326,6 +383,9 @@ function submitProfileUpdateForm() {
                             })
                             .then(() => {
                                 displaySuccessModal();
+                                admin.email = email;
+                                admin.fName = fName;
+                                admin.lName = lName;
                             })
                             .catch(error => {
                                 displayErrorModal(error);
@@ -423,16 +483,13 @@ function loadMap(x, y) {
 
         map.on('mousedown', 'point', function(e) {
             e.preventDefault();
-
             canvas.style.cursor = 'grab';
-
             map.on('mousemove', onMove);
             map.once('mouseup', onUp);
         });
 
         map.on('touchstart', 'point', function(e) {
             if (e.points.length !== 1) return;
-
             e.preventDefault();
             map.on('touchmove', onMove);
             map.once('touchend', onUp);
@@ -464,4 +521,53 @@ function displayErrorModal(error) {
         modal.style.display = "none";
     }
     document.getElementById("errorModalReason").innerText = error;
+}
+
+function csvToJson(csv) {
+    let lines = csv.split("\n");
+    let result = [];
+    let headers = lines[0].split(",");
+    headers = headers.map((header) => header.trim().slice(1, -1));
+    for (let i = 1; i < lines.length; i++) {
+        let obj = {};
+        let currentLine = lines[i].split(",");
+        for (let j = 0; j < headers.length; j++) {
+            obj[headers[j]] = currentLine[j].trim().slice(1, -1);
+        }
+        result.push(obj);
+    }
+    return result;
+}
+
+function showGrid(columnDefs, rowData, container, sheetName) {
+    let gridOptions = {
+        columnDefs: columnDefs,
+        rowData: rowData,
+        pagination: true,
+        animateRows: true
+    };
+    new agGrid.Grid(container, gridOptions);
+    document.getElementById('export-btn').addEventListener('click', () => {
+        let wb = {
+            "SheetNames": [sheetName],
+            Sheets: {
+                [`${sheetName}`]: XLSX.utils.json_to_sheet(csvToJson(gridOptions.api.getDataAsCsv(gridOptions)))
+            }
+        };
+        XLSX.writeFile(wb, `${sheetName}.xlsx`);
+    });
+}
+
+function fillProfileUpdateForm() {
+    document.getElementById("up_email").value = admin.email;
+    document.getElementById("up_fName").value = admin.fName;
+    document.getElementById("up_lName").value = admin.lName;
+}
+
+function fillOrgUpdateForm() {
+    document.getElementById("orgName").value = organization.name;
+    document.getElementById("orgEmail").value = organization.email;
+    document.getElementById("orgLocation").value = organization.location;
+    document.getElementById("orgAddress").value = organization.address;
+    document.getElementById("orgPhoneNumber").value = organization.phoneNumber;
 }

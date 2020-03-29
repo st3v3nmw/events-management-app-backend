@@ -22,7 +22,7 @@ for (let link of tabs) {
                         case "ongoing":
                             loadOnGoingEvents();
                             break;
-                        case "finished":
+                        case "past":
                             loadPastEvents();
                             break;
                         case "manage_employees":
@@ -39,6 +39,12 @@ for (let link of tabs) {
                             } else {
                                 loadMap(0, 0);
                             }
+                            break;
+                        case "update_org":
+                            fillOrgUpdateForm();
+                            break;
+                        case "update_profile":
+                            fillProfileUpdateForm();
                             break;
                     }
                 });

@@ -35,15 +35,19 @@ a {
     list-style-type: none;
     margin: 0;
     padding: 0 20px 0 0;
-    width: auto;
+    width: 100%;
     height: 50px;
     box-shadow: 1px 1px rgba(192, 192, 192, 0.8);
+    position: fixed;
+    z-index: 1;
+    background-color: white;
 }
 
 .main-content {
     display: grid;
     grid-template-columns: 200px auto;
     width: 100vw;
+    margin-top: 50px;
 }
 
 .top-nav li {
@@ -90,7 +94,7 @@ a {
 }
 
 .menu-item-icon {
-    padding: 0px 10px 0px 25px;
+    padding: 0 10px 0 25px;
     font-size: 25px;
 }
 
@@ -118,14 +122,14 @@ a {
 }
 
 .green {
-    background-color: #00FF00; /* fix me */
+    background-color: #4caf50;
 }
 
 .btn {
     border-radius: 5px;
     height: 35px;
     width: 90px;
-    border: 0px;
+    border: 0;
     text-transform: uppercase;
     color: white;
 }
@@ -134,13 +138,8 @@ a {
     border-radius: 50%;
     height: 50px;
     width: 50px;
-    border: 0px;
+    border: 0;
     color: white;
-}
-
-.card {
-    height: 200px;
-    width: 200px;
 }
 
 .form-field {
@@ -284,6 +283,49 @@ a {
     cursor: pointer;
 }
 
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+.inline-h1 {
+    display: inline-block;
+}
+
+.link-list {
+    text-decoration: underline;
+}
+
 #base64Image, #longitude, #latitude {
     display: none;
 }
@@ -316,4 +358,30 @@ a {
 #loginForm {
     margin-top: 120px;
     height: 70vh;
+}
+
+#employees_container {
+    height: 70vh;
+    width: 60vw;
+}
+
+#export-btn {
+    color: white;
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 8px;
+    display: inline;
+}
+
+#export-btn:hover {
+    cursor: pointer;
+}
+
+#ongoing_container, #past_container {
+    height: 70vh;
+    width: 75vw;
+}
+
+#display_name {
+    padding-right: 32px;
 }
