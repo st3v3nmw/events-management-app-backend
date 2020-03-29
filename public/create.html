@@ -24,8 +24,8 @@
         </div>
         <div class="form-field">
             <div class="form-field__control">
-                <input id="location" type="text" class="form-field__input" placeholder=" " required>
-                <label for="location" class="form-field__label">Location</label>
+                <input id="event_location" type="text" class="form-field__input" placeholder=" " required>
+                <label for="event_location" class="form-field__label">Location</label>
                 <div class="form-field__bar"></div>
             </div>
         </div>
@@ -59,3 +59,26 @@
         <p id="longitude"></p>
     </div>
 </form>
+<div id="successModal" class="modal">
+    <div class="modal-content green">
+        <div class="modal-header">
+            <span class="close" id="successModalX">&times;</span>
+            <h3>Success</h3>
+        </div>
+        <div class="modal-body">
+            <p>Event Created Successfully.</p>
+        </div>
+    </div>
+</div>
+<div id="errorModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header red">
+            <span class="close" id="errorModalX">&times;</span>
+            <h3>Error</h3>
+        </div>
+        <div class="modal-body">
+            <p>Event Not Created.</p>
+            <p id="errorModalReason"></p>
+        </div>
+    </div>
+</div>

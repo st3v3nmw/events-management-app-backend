@@ -9,7 +9,8 @@
     </head>
     <body>
         <form onsubmit="return submitLoginForm()" class="splitForm">
-            <div>
+            <div class="subform" id="loginForm">
+                <h1>Admin Login</h1>
                 <div class="form-field">
                     <div class="form-field__control">
                         <input id="email" type="email" class="form-field__input" placeholder=" " required>
@@ -30,6 +31,18 @@
                 <img src="assets/team_spirit.svg" id="team_spirit">
             </div>
         </form>
+        <div id="errorModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header red">
+                    <span class="close" id="errorModalX">&times;</span>
+                    <h3>Error</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Login Failed.</p>
+                    <p id="errorModalReason"></p>
+                </div>
+            </div>
+        </div>
         <script defer src="js/app.js"></script>
     </body>
 </html>

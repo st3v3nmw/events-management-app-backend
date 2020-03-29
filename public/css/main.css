@@ -85,7 +85,7 @@ a {
     display: grid;
 }
 
-.menu-item :hover {
+.menu-item:hover {
     cursor: pointer;
 }
 
@@ -97,6 +97,7 @@ a {
 .menu-item-text {
     margin: 0;
     padding: 2px 0 0 0;
+    font-weight: bold;
 }
 
 .container {
@@ -160,6 +161,7 @@ a {
     transition: all 0.4s;
     width: 100%;
 }
+
 .form-field__control {
     background: #eee;
     border-radius: 8px 8px 0 0;
@@ -167,6 +169,7 @@ a {
     position: relative;
     width: 100%;
 }
+
 .form-field__bar {
     border-bottom: 2px solid #2196f3;
     bottom: 0;
@@ -180,6 +183,7 @@ a {
     transition: all 0.4s;
     width: 1%;
 }
+
 .form-field__input, .form-field__textarea {
     appearance: none;
     background: transparent;
@@ -193,23 +197,28 @@ a {
     padding: 0 12px 10px 12px;
     width: 100%;
 }
+
 .form-field__input:-ms-input-placeholder ~ .form-field__label, .form__fieldtextarea:-ms-input-placeholder ~ .form-field__label {
     font-size: 1.2rem;
     transform: translateY(0);
 }
+
 .form-field__input:placeholder-shown ~ .form-field__label, .form__fieldtextarea:placeholder-shown ~ .form-field__label {
     font-size: 1.2rem;
     transform: translateY(0);
 }
+
 .form-field__input:focus ~ .form-field__label, .form-field__textarea:focus ~ .form-field__label {
     color: #2196f3;
     font-size: 0.75rem;
     transform: translateY(-14px);
 }
+
 .form-field__input:focus ~ .form-field__bar, .form-field__textarea:focus ~ .form-field__bar {
     border-bottom: 2px solid #2196f3;
     transform: scaleX(150);
 }
+
 .form-field__textarea {
     height: 150px;
 }
@@ -226,6 +235,53 @@ a {
 
 .subform {
     padding: 20px;
+    overflow: hidden;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 40%;
+    border-radius: 15px;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
+
+.close {
+    margin-top: 10px;
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 #base64Image, #longitude, #latitude {
@@ -254,4 +310,10 @@ a {
 
 #team_spirit {
     width: 500px;
+    transform: translate(80px, 100px);
+}
+
+#loginForm {
+    margin-top: 120px;
+    height: 70vh;
 }

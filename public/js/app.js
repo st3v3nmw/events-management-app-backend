@@ -80,9 +80,7 @@ function submitSignUp() {
     firebase.auth()
         .createUserWithEmailAndPassword(email, password)
             .catch(function(error) {
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                console.log(errorCode, errorMessage);
+                displayErrorModal(error.message);
             });
 
     firebase.auth().onAuthStateChanged(user => {
@@ -181,21 +179,17 @@ function submitCreateEventForm() {
                 type: Number.parseInt(type)
             })
             .then(docRef => {
-                console.log("event added");
+                displaySuccessModal();
+                // Add Event Calendar & Event Lineup
             })
             .catch(error => {
-                console.log(error);
+                displayErrorModal(error);
             });
 
     return false;
 }
 
 function loadOnGoingEvents() {
-    if (admin == null || organization == null) {
-        console.log("Please wait for setup to complete...");
-        return;
-    }
-
     const container = document.getElementById("ongoing_container");
     events = [];
     db.collection("events")
@@ -213,7 +207,7 @@ function loadOnGoingEvents() {
             container.innerHTML = s;
         })
         .catch(error => {
-            console.log(error);
+            displayErrorModal(error);
         });
 }
 
@@ -232,7 +226,7 @@ function loadPastEvents() {
             container.innerHTML = s;
         })
         .catch(error => {
-            console.log(error);
+            displayErrorModal(error);
         });
 }
 
@@ -243,7 +237,7 @@ function submitAddEmployeeForm() {
         .get()
         .then(querySnapshot => {
             if (querySnapshot['empty']) {
-                console.log("Provided email does not exist");
+                displayErrorModal("Provided email does not exist in our records.");
             }
 
             employee = querySnapshot['docs'][0].data();
@@ -255,17 +249,17 @@ function submitAddEmployeeForm() {
                         organization: organization.orgId
                     })
                     .then(() => {
-                        console.log("Added Successfully!");
+                        displaySuccessModal();
                     })
                     .catch(error => {
-                        console.log(error);
+                        displayErrorModal(error);
                     });
             } else {
-                console.log("The person is already tied to an organization");
+                displayErrorModal("The person is already tied to an organization.");
             }
         })
         .catch(error => {
-            console.log(error);
+            displayErrorModal(error);
         });
     return false;
 }
@@ -284,7 +278,7 @@ function listEmployees() {
             container.innerHTML = s;
         })
         .catch(error => {
-            console.log(error);
+            displayErrorModal(error);
         });
 }
 
@@ -299,10 +293,10 @@ function submitOrgUpdateForm() {
             name, email, location, address, orgPhoneNumber
         })
         .then(() => {
-            console.log("update successful");
+            displaySuccessModal();
         })
         .catch(error => {
-            console.log(error);
+            displayErrorModal(error);
         });
     return false;
 }
@@ -326,25 +320,24 @@ function submitProfileUpdateForm() {
             user.updateEmail(email).then(function() {
                 user.updatePassword(password)
                     .then(function() {
-                        console.log("password updated");
                         db.collection("users").doc(user.uid)
                             .update({
                                 email, fName, lName
                             })
                             .then(() => {
-                                console.log("done!!!");
+                                displaySuccessModal();
                             })
                             .catch(error => {
-                                console.log(error);
+                                displayErrorModal(error);
                             });
                     }).catch(function(error) {
-                        console.log("password update failed");
+                        displayErrorModal("Password Update Failed.");
                     });
               }).catch(function(error) {
-                    console.log("email update failed");
+                    displayErrorModal("Email Update Failed.");
               });
         }).catch(function(error) {
-            console.log("authentication failed!");
+            displayErrorModal("Authentication Failed.");
         });
     return false;
 }
@@ -355,9 +348,7 @@ function submitLoginForm() {
     firebase.auth()
         .signInWithEmailAndPassword(email, password)
         .catch(error => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode, errorMessage);
+            displayErrorModal(error.message);
         });
 
     firebase.auth().onAuthStateChanged(user => {
@@ -367,7 +358,6 @@ function submitLoginForm() {
 }
 
 function loadMap(x, y) {
-    console.log(x, y);
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
@@ -457,4 +447,21 @@ function adjustColor(former, next) {
     document.getElementById(former).style.backgroundColor = "white";
     document.getElementById(next).style.color = "white";
     document.getElementById(next).style.backgroundColor = "#2196f3";
+}
+
+function displaySuccessModal() {
+    let modal = document.getElementById('successModal')
+    modal.style.display = "block";
+    document.getElementById('successModalX').onclick = () => {
+        modal.style.display = "none";
+    }
+}
+
+function displayErrorModal(error) {
+    let modal = document.getElementById('errorModal')
+    modal.style.display = "block";
+    document.getElementById('errorModalX').onclick = () => {
+        modal.style.display = "none";
+    }
+    document.getElementById("errorModalReason").innerText = error;
 }
