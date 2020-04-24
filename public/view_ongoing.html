@@ -1,0 +1,85 @@
+<h1>View Ongoing Event</h1>
+
+<form onsubmit="return submitUpdateEventForm()" class="splitForm">
+    <div id="createEventForm1">
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="event_name" type="text" class="form-field__input" placeholder=" " required>
+                <label for="event_name" class="form-field__label">Event Name</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div> 
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="event_start_date" type="date" class="form-field__input" required>
+                <label for="event_start_date" class="form-field__label">Start Date</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div> 
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="event_end_date" type="date" class="form-field__input" required>
+                <label for="event_end_date" class="form-field__label">End Date</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="event_location" type="text" class="form-field__input" placeholder=" " required>
+                <label for="event_location" class="form-field__label">Location</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <select id="event_type" class="form-field__input" required>
+                    <option value="0">Conference</option>
+                    <option value="1">Workshop</option>
+                    <option value="2">Concert</option>
+                </select>
+                <label for="event_type" class="form-field__label">Event Type</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field__control">
+                <input id="banner-image" type="file" class="form-field__input" accept="image/x-png,image/jpeg" required>
+                <label for="banner-image" class="form-field__label">Banner Image</label>
+                <div class="form-field__bar"></div>
+            </div>
+        </div>
+        <button class="btn blue">Update</button>
+    </div>
+    <div id="createEventForm2">
+        <p>Drag the blue dot to select the event location: </p>
+        <div id="map">
+            <p>Loading Map...</p>
+        </div>
+        <p id="base64Image"></p>
+        <p id="latitude"></p>
+        <p id="longitude"></p>
+    </div>
+</form>
+<div id="successModal" class="modal">
+    <div class="modal-content green">
+        <div class="modal-header">
+            <span class="close" id="successModalX">&times;</span>
+            <h3>Success</h3>
+        </div>
+        <div class="modal-body">
+            <p>Event Updated Successfully.</p>
+        </div>
+    </div>
+</div>
+<div id="errorModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header red">
+            <span class="close" id="errorModalX">&times;</span>
+            <h3>Error</h3>
+        </div>
+        <div class="modal-body">
+            <p>Event Not Created.</p>
+            <p id="errorModalReason"></p>
+        </div>
+    </div>
+</div>

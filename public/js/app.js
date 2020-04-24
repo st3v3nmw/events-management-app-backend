@@ -116,7 +116,7 @@ function submitSignUp() {
                         })
                         .then(() => {
                             // done!!!
-                            window.location.href="index.html"
+                            window.location.href="dashboard.html"
                         })
                         .catch(error => {
                             console.error("Error writing document: ", error);
@@ -211,8 +211,7 @@ function loadOnGoingEvents() {
                     link.style.textDecoration = "underline";
                     link.style.cursor = "pointer";
                     link.addEventListener('click', () => {
-                        console.log(params);
-                        // TODO: Expand Event View
+                        viewOngoingEvent(params.data.id);
                     });
                     return link;
                 }},
@@ -222,13 +221,14 @@ function loadOnGoingEvents() {
                 {headerName: "End", field: "end", width: 100, sortable: true, filter: true},
                 {headerName: "Type", field: "type", width: 120, sortable: true, filter: true},
                 {headerName: "Attendees", field: "attendeeCount", width: 105, sortable: true, filter: true},
-                {headerName: "Check-ins", field: "checkInCount", width: 100, sortable: true, filter: true}
+                {headerName: "Check-ins", field: "checkInCount", width: 100, sortable: true, filter: true},
+                {headerName: "id", field: "id", width: 0, hide: true}
             ];
             let rowData = [];
             querySnapshot.forEach(doc => {
                 event = new Event(doc.data(), doc.id);
                 employee = doc.data();
-                rowData.push({name: event.name, location: event.location, start: event.start, end: event.end, type: event.type, attendeeCount: event.attendeeCount, checkInCount: event.checkInCount});
+                rowData.push({id: doc.id, name: event.name, location: event.location, start: event.start, end: event.end, type: event.type, attendeeCount: event.attendeeCount, checkInCount: event.checkInCount});
             });
             showGrid(columnDefs, rowData, container, "Ongoing Events");
         })
@@ -251,8 +251,7 @@ function loadPastEvents() {
                     link.style.textDecoration = "underline";
                     link.style.cursor = "pointer";
                     link.addEventListener('click', () => {
-                        console.log(params);
-                        // TODO: Expand Event View
+                        viewEvent(params.data.id);
                     });
                     return link;
                 }},
@@ -262,13 +261,14 @@ function loadPastEvents() {
                 {headerName: "End", field: "end", width: 100, sortable: true, filter: true},
                 {headerName: "Type", field: "type", width: 120, sortable: true, filter: true},
                 {headerName: "Attendees", field: "attendeeCount", width: 105, sortable: true, filter: true},
-                {headerName: "Check-ins", field: "checkInCount", width: 100, sortable: true, filter: true}
+                {headerName: "Check-ins", field: "checkInCount", width: 100, sortable: true, filter: true},
+                {headerName: "id", field: "id", width: 0, hide: true}
             ];
             let rowData = [];
             querySnapshot.forEach(doc => {
                 event = new Event(doc.data(), doc.id);
                 employee = doc.data();
-                rowData.push({name: event.name, location: event.location, start: event.start, end: event.end, type: event.type, attendeeCount: event.attendeeCount, checkInCount: event.checkInCount});
+                rowData.push({id: doc.id, name: event.name, location: event.location, start: event.start, end: event.end, type: event.type, attendeeCount: event.attendeeCount, checkInCount: event.checkInCount});
             });
             showGrid(columnDefs, rowData, container, "Past Events");
         })
@@ -412,7 +412,7 @@ function submitLoginForm() {
         });
 
     firebase.auth().onAuthStateChanged(user => {
-        if (user) window.location.href = "index.html";
+        if (user) window.location.href = "dashboard.html";
         });
     return false;
 }
@@ -570,4 +570,12 @@ function fillOrgUpdateForm() {
     document.getElementById("orgLocation").value = organization.location;
     document.getElementById("orgAddress").value = organization.address;
     document.getElementById("orgPhoneNumber").value = organization.phoneNumber;
+}
+
+function viewOngoingEvent(eventId) {
+    fetchHTML(`view_ongoing.html`)
+        .then(value => {
+            content.innerHTML = value;
+            
+        });
 }
