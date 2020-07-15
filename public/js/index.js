@@ -15,7 +15,13 @@ for (let link of tabs) {
         .addEventListener('click', () => {
             adjustColor(active, link);
             active = link;
-            fetchHTML(link+".html")
+            if (link == "stats") {
+                fetchHTML("home.html")
+                .then(value => {
+                    content.innerHTML = value;
+                });
+            } else {
+                fetchHTML(link+".html")
                 .then(value => {
                     content.innerHTML = value;
                     switch(link) {
@@ -48,5 +54,6 @@ for (let link of tabs) {
                             break;
                     }
                 });
+            }
         });
 }

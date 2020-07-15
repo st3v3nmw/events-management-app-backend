@@ -338,6 +338,7 @@ a {
 
 #map p {
     transform: translate(200px, 170px);
+    display: inline;
 }
 
 #createEventForm1 {

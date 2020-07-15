@@ -1,4 +1,4 @@
-class Employee {
+class User {
     constructor(doc, userId) {
         this.access = doc['access'];
         this.createdAt = dateString(doc['created'].toDate());
@@ -11,7 +11,7 @@ class Employee {
     }
 }
 
-class Admin extends Employee {
+class Admin extends User {
     constructor(doc, userId) {
         super(doc, userId);
     }
@@ -47,7 +47,6 @@ class Event {
     }
 }
 
-
 const db = firebase.firestore();
 let admin = null;
 let organization = null;
@@ -71,6 +70,10 @@ function getTodayDate() {
 
 function dateString(date) {
     return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+}
+
+function dateTimeString(date) {
+    return `${dateString(date)} ${date.getHours()}:${date.getMinutes()} ${date.getSeconds()}`;
 }
 
 function readFile() {
@@ -116,7 +119,7 @@ function submitSignUp() {
                         })
                         .then(() => {
                             // done!!!
-                            window.location.href="dashboard.html"
+                            window.location.href="/"
                         })
                         .catch(error => {
                             console.error("Error writing document: ", error);
@@ -211,7 +214,7 @@ function loadOnGoingEvents() {
                     link.style.textDecoration = "underline";
                     link.style.cursor = "pointer";
                     link.addEventListener('click', () => {
-                        viewOngoingEvent(params.data.id);
+                        window.open(`list_attendees.html?id=${params.data.id}&name=${params.data.name}`,'targetWindow', `toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes`);
                     });
                     return link;
                 }},
@@ -251,7 +254,7 @@ function loadPastEvents() {
                     link.style.textDecoration = "underline";
                     link.style.cursor = "pointer";
                     link.addEventListener('click', () => {
-                        viewEvent(params.data.id);
+                        window.open(`list_attendees.html?id=${params.data.id}&name=${params.data.name}`,'targetWindow', `toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes`);
                     });
                     return link;
                 }},
@@ -412,7 +415,7 @@ function submitLoginForm() {
         });
 
     firebase.auth().onAuthStateChanged(user => {
-        if (user) window.location.href = "dashboard.html";
+        if (user) window.location.href = "/";
         });
     return false;
 }
@@ -540,7 +543,7 @@ function csvToJson(csv) {
 }
 
 function showGrid(columnDefs, rowData, container, sheetName) {
-    let gridOptions = {
+    var gridOptions = {
         columnDefs: columnDefs,
         rowData: rowData,
         pagination: true,
@@ -556,6 +559,7 @@ function showGrid(columnDefs, rowData, container, sheetName) {
         };
         XLSX.writeFile(wb, `${sheetName}.xlsx`);
     });
+    return gridOptions;
 }
 
 function fillProfileUpdateForm() {
