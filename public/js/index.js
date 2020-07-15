@@ -57,3 +57,8 @@ for (let link of tabs) {
             }
         });
 }
+
+document.getElementById('log-out')
+    .addEventListener('click', () => {
+        logOut();
+    });

@@ -583,3 +583,11 @@ function viewOngoingEvent(eventId) {
             
         });
 }
+
+function logOut() {
+    firebase.auth().signOut().then(function() {
+        window.location.href="/";
+      }).catch(function(error) {
+        // An error happened.
+      });   
+}
