@@ -3,7 +3,6 @@ window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(a,name,value){$_
 eventId = $_GET['id'];
 // document.getElementById('report-title').innerText = `${$_GET['name']} attendees`;
 const container = document.getElementById("attendees-list");
-
 db.collection("tickets")
     .where("eventId", "==", eventId)
     .get()
