@@ -1,8 +1,6 @@
-# CSC227 Admin platform
+# Admin platform for an events management app
 
-Source code for the web admin platform for an app I created for CSC227 \
-The app can be found here [Admin web backend repository](https://github.com/st3v3nmw/CSC227-app) \
-It needs some more work, but not gonna happen :)
+The app can be found here [Admin web backend repository](https://github.com/st3v3nmw/events-management-app)
 
 ## Screenshots
 
